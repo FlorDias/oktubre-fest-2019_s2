@@ -1,0 +1,83 @@
+import marcas.*
+import jarras.*
+import personas.*
+import carpas.*
+
+describe "Requerimientos - segunda parte" {
+
+	// Marcas De Cerveza
+	
+	const corona = new CervezaRubia(contenidoDeLupulo = 3, origen = "", graduacion = 9)
+	const guiness = new CervezaNegra(contenidoDeLupulo = 2, origen = "")
+	const hofbrau = new CervezaRoja(contenidoDeLupulo = 1, origen = "")
+	
+	// Jarras
+	
+	const jarra1 = new Jarras(capacidadEnLitros = 1, cerveza = corona)
+	const jarra2 = new Jarras(capacidadEnLitros = 0.5, cerveza = guiness)
+	const jarra3 = new Jarras(capacidadEnLitros = 1.5, cerveza = hofbrau)
+	
+	//  Personas
+	
+	const joaquin = new Personas(peso = 80, leGustaEscucharMusica = true, nivelDeAguante = 50)
+	const gerardo = new Personas (peso = 120, leGustaEscucharMusica = false, nivelDeAguante = 30)
+	const facundo = new Personas (peso = 70, leGustaEscucharMusica = true, nivelDeAguante = 100)
+	
+	// Carpas
+	
+	const carpa1 = new CarpasCerveceras(cerveza = corona)
+	const carpa2 = new CarpasCerveceras (cerveza = guiness)
+	
+	fixture {
+		
+		graduacionMundial.graduacion(0.04)
+		
+		carpa1.ponerMusicaSi(joaquin)
+		carpa1.ponerMusicaSi(gerardo)
+		carpa1.ponerMusicaSi(facundo)
+		
+		carpa1.limiteDeGente(20)
+		
+		joaquin.comprarJarra(jarra1)
+		joaquin.comprarJarra(jarra1)
+		gerardo.comprarJarra(jarra2)
+		gerardo.comprarJarra(jarra3)
+		facundo.comprarJarra(jarra1)
+		facundo.comprarJarra(jarra2)
+		facundo.comprarJarra(jarra3)
+		
+	}
+	
+	test "Quieren entrar a una carpa de cerveza rubia" {
+
+		assert.that(carpa1.quiereEntrar(joaquin))
+		assert.that(carpa1.quiereEntrar(gerardo))
+		assert.that(carpa1.quiereEntrar(facundo))
+	}
+	
+	test "Quieren entrar a una carpa de cerveza negra" {
+		
+		assert.notThat(carpa2.quiereEntrar(joaquin))
+		assert.notThat(carpa2.quiereEntrar(gerardo))
+		assert.notThat(carpa2.quiereEntrar(facundo))
+	}
+	
+	test "¿Deja ingresar?" {
+		
+		assert.that(carpa1.dejaIngresar(joaquin))
+		assert.that(carpa1.dejaIngresar(gerardo))
+		assert.that(carpa1.dejaIngresar(facundo))
+		
+	}
+	
+	test "Puede entrar" {
+		
+		assert.that(carpa1.puedeEntrar(joaquin))
+		assert.notThat(carpa1.dejaIngresar(gerardo))
+		assert.notThat(carpa1.dejaIngresar(facundo))
+	}
+	
+//	test "Hacer que una persona efectivamente entre "{
+		
+//	}
+}
